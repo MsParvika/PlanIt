@@ -9,9 +9,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -136,20 +134,21 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            new View.OnClickListener() {
-                @TargetApi(Build.VERSION_CODES.M)
-                @Override
-                public void onClick(View v) {
-                    if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                        requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
-                    } else {
-                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
-                    }
-                }
-            };
-        } else if (id == R.id.nav_account) {
+//        if (id == R.id.nav_camera) {
+//            new View.OnClickListener() {
+//                @TargetApi(Build.VERSION_CODES.M)
+//                @Override
+//                public void onClick(View v) {
+//                    if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+//                        requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
+//                    } else {
+//                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+//                    }
+//                }
+//            };
+//        } else
+        if (id == R.id.nav_account) {
 
         } else if (id == R.id.nav_upcomingevent) {
 
