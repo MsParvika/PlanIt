@@ -20,6 +20,10 @@
             android:id="@+id/nav_pastevents"
             android:icon="@drawable/ic_archive_black_24dp"
             android:title="Past Events" />
+        <item
+            android:id="@+id/nav_maps"
+            android:icon="@drawable/ic_archive_black_24dp"
+            android:title="Maps" />
     </group>
 
     <item android:title="Communicate">
