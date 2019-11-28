@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "75819850470",
+    "firebase_url": "https://pit123.firebaseio.com",
+    "project_id": "pit123",
+    "storage_bucket": "pit123.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:75819850470:android:3bc011f383c010cda73927",
+        "android_client_info": {
+          "package_name": "com.example.planit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "75819850470-enjcdivskj16uj6oq0jrf5ogu79j3m4s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsJdrwZ3OhvOiYnaK3BGC2FL94sxLKm-s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "75819850470-enjcdivskj16uj6oq0jrf5ogu79j3m4s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
