@@ -3,12 +3,14 @@ package com.example.planit;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ContentUris;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.Calendar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -166,6 +170,25 @@ public class MainActivity extends AppCompatActivity
             //Intent intent = new Intent(MainActivity.this, MapsActivity.class);
             //startActivity(intent);
         } else if (id == R.id.nav_pastevents) {
+//            long eventID = 208;
+//            Uri uri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, eventID);
+//            Intent intent = new Intent(Intent.ACTION_VIEW)
+//                    .setData(uri);
+//            startActivity(intent);
+
+            Calendar beginTime = Calendar.getInstance();
+            beginTime.set(2019, 11, 19, 7, 30);
+            Calendar endTime = Calendar.getInstance();
+            endTime.set(2019, 11, 19, 8, 30);
+            Intent intent = new Intent(Intent.ACTION_INSERT)
+                    .setData(CalendarContract.Events.CONTENT_URI)
+                    .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
+                    .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis())
+                    .putExtra(CalendarContract.Events.TITLE, "Yoga")
+                    .putExtra(CalendarContract.Events.DESCRIPTION, "Group class")
+                    .putExtra(CalendarContract.Events.EVENT_LOCATION, "The gym");
+
+            startActivity(intent);
 
         } else if (id == R.id.nav_share) {
 
