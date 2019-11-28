@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.example.planit.util.CloudTextRecognitionProcessor;
 import com.example.planit.util.GraphicOverlay;
 import com.example.planit.util.VisionImageProcessor;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -43,8 +44,12 @@ public class TextPreviewActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         preview.setImageBitmap(bitmapForDetection);
+
+        graphicOverlay = findViewById(R.id.previewOverlay);
+        graphicOverlay.clear();
+        imageProcessor = new CloudTextRecognitionProcessor();
+        imageProcessor.process(bitmapForDetection, graphicOverlay);
 
     }
 
