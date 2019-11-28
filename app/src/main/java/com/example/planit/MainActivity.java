@@ -3,12 +3,14 @@ package com.example.planit;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
@@ -19,7 +21,9 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -34,7 +38,7 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG = "MainActivity";
 
     private static final int CAMERA_REQUEST = 1888;
-    private static final int MY_CAMERA_PERMISSION_CODE = 100;
+    private static final int CAPTURE_PERMISSIONS_CODE = 100;
 
     private FloatingActionButton fabCreate;
     private FloatingActionButton fabCamera;
@@ -59,9 +63,9 @@ public class MainActivity extends AppCompatActivity
         fabCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!isFABOpen){
+                if (!isFABOpen) {
                     showFABMenu();
-                }else{
+                } else {
                     closeFABMenu();
                 }
             }
@@ -81,7 +85,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
+                    requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, CAPTURE_PERMISSIONS_CODE);
                 } else {
                     startCameraIntentForResult();
                 }
@@ -93,13 +97,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == MY_CAMERA_PERMISSION_CODE) {
+        if (requestCode == CAPTURE_PERMISSIONS_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                Toast.makeText(this, "Permissions Granted", Toast.LENGTH_LONG).show();
+                startCameraIntentForResult();
             } else {
-                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Permissions Denied", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -107,8 +110,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST && resultCode == AppCompatActivity.RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-//            imageView.setImageBitmap(photo);
             startTextDetectionAndPreview();
         }
     }
@@ -156,7 +157,35 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.nav_upcomingevent) {
 
+        } else if (id == R.id.nav_maps) {
+            // TODO : get a location
+            Uri gmmIntentUri = Uri.parse("geo:0,0?q=1600 Amphitheatre Parkway, Mountain+View, California");
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            startActivity(mapIntent);
+
+            //Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+            //startActivity(intent);
         } else if (id == R.id.nav_pastevents) {
+//            long eventID = 208;
+//            Uri uri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, eventID);
+//            Intent intent = new Intent(Intent.ACTION_VIEW)
+//                    .setData(uri);
+//            startActivity(intent);
+
+            Calendar beginTime = Calendar.getInstance();
+            beginTime.set(2019, 11, 19, 7, 30);
+            Calendar endTime = Calendar.getInstance();
+            endTime.set(2019, 11, 19, 8, 30);
+            Intent intent = new Intent(Intent.ACTION_INSERT)
+                    .setData(CalendarContract.Events.CONTENT_URI)
+                    .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
+                    .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis())
+                    .putExtra(CalendarContract.Events.TITLE, "Yoga")
+                    .putExtra(CalendarContract.Events.DESCRIPTION, "Group class")
+                    .putExtra(CalendarContract.Events.EVENT_LOCATION, "The gym");
+
+            startActivity(intent);
 
         } else if (id == R.id.nav_share) {
 
@@ -177,6 +206,7 @@ public class MainActivity extends AppCompatActivity
             imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
             startActivityForResult(takePictureIntent, CAMERA_REQUEST);
+            closeFABMenu();
         }
     }
 
@@ -188,19 +218,32 @@ public class MainActivity extends AppCompatActivity
             }
 
             Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+            //Write file
+            String filename = "event_capture.png";
+            FileOutputStream stream = this.openFileOutput(filename, Context.MODE_PRIVATE);
+            imageBitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
+
+            //Cleanup
+            stream.close();
+            imageBitmap.recycle();
+
+            //Pop intent
+            Intent previewIntent = new Intent(this, TextPreviewActivity.class);
+            previewIntent.putExtra("image", filename);
+            startActivity(previewIntent);
 
         } catch (IOException e) {
             Log.e(TAG, "Error retrieving saved image");
         }
     }
 
-    private void showFABMenu(){
+    private void showFABMenu() {
         isFABOpen = true;
         fabCamera.animate().translationY(-getResources().getDimension(R.dimen.standard_65)).setDuration(150);
         fabGallery.animate().translationY(-getResources().getDimension(R.dimen.standard_125)).setDuration(150);
     }
 
-    private void closeFABMenu(){
+    private void closeFABMenu() {
         isFABOpen = false;
         fabCamera.animate().translationY(0).setDuration(150);
         fabGallery.animate().translationY(0).setDuration(150);

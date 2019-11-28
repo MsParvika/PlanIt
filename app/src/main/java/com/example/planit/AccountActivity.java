@@ -21,4 +21,6 @@ public class AccountActivity extends AppCompatActivity {
         Button editBut = (Button) this.findViewById(R.id.editAccount);
 
     }
+
+
 }
