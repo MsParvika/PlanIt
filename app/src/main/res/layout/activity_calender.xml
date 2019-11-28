@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/calenderLayout"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="10"
+        android:background="#3397D4"
+        android:padding="2dp"
+        android:layout_height="wrap_content" android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/backToMain"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:layout_height="wrap_content"
+
+            android:background="#3397D4"
+            android:textColor="#fff"
+            android:src="@drawable/back"
+            android:scaleType="fitStart"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            />
+        <ImageButton
+            android:id="@+id/syncEvents"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:background="#3397D4"
+            android:textColor="#fff"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/sync"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            />
+        <ImageButton
+            android:id="@+id/scheduleMeeting"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:src="@drawable/smeeting"
+            android:background="#3397D4"
+            android:textColor="#fff"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/eventList"
+        android:divider="#d9d9d9"
+        android:dividerHeight="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </ListView>
+
+</LinearLayout>

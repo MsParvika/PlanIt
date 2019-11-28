@@ -1,16 +1,24 @@
 <resources>
-    <string name="app_name">PlanIt</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Plan It</string>
-    <string name="nav_header_subtitle">Event Planner Application</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
-    <string name="welcome_back">Welcome Back!</string>
-    <string name="email">Email:</string>
-    <string name="full_name">Full Name :</string>
-    <string name="enter_edit_email">Enter/Edit Email</string>
-    <string name="edit_name">Edit name</string>
-    <string name="save">Save</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="app_name">GoogleCalendar</string>
+    <string name="backToMain">Back</string>
+    <string name="eventTitle">Title</string>
+    <string name="eventDesc">Description</string>
+    <string name="eventAttendee">Attendee</string>
+    <string name="eventStart">Start Time</string>
+    <string name="eventEnd">End Time</string>
+    <string name="eventLocation">Location</string>
+
+    <string name="createEventTitle">Title</string>
+    <string name="createEventDesc">Description</string>
+    <string name="createEventAttendee">Attendee</string>
+    <string name="createEventStart">Start At</string>
+    <string name="createEventStartDate">Pick Date</string>
+    <string name="createEventStartTime">Pick Time</string>
+
+    <string name="createEventEnd">End At</string>
+    <string name="createEventEndDate">Pick Date</string>
+    <string name="createEventEndTime">Pick Time</string>
+
+
+    <string name="createEventLocation">Location</string>
 </resources>

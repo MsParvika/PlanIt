@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/calenderLayout"
+    android:background="#1E5A7F"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="10"
+        android:padding="5dp"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/eventTitleLabel"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:textColor="#fff"
+            android:text="@string/eventTitle"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/eventTitle"
+            android:layout_width="0dp"
+            android:layout_weight="7"
+            android:textColor="#fff"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="10"
+        android:padding="5dp"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/eventDescLabel"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:textColor="#fff"
+            android:text="@string/eventDesc"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/eventDes"
+            android:layout_width="0dp"
+            android:layout_weight="7"
+            android:textColor="#fff"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="10"
+        android:textColor="#fff"
+        android:padding="5dp"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/eventAttendeeLabel"
+            android:layout_width="0dp"
+            android:textColor="#fff"
+            android:layout_weight="3"
+            android:text="@string/eventAttendee"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:textColor="#fff"
+            android:id="@+id/eventAttendee"
+            android:layout_width="0dp"
+            android:layout_weight="7"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="10"
+        android:padding="5dp"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/eventLocationLabel"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:textColor="#fff"
+            android:text="@string/eventLocation"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/eventLocation"
+            android:layout_width="0dp"
+            android:textColor="#fff"
+            android:layout_weight="7"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="10"
+        android:padding="5dp"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/eventStartLabel"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:textColor="#fff"
+            android:text="@string/eventStart"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/eventStart"
+            android:layout_width="0dp"
+            android:layout_weight="7"
+            android:textColor="#fff"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="10"
+        android:padding="5dp"
+
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/eventEndLabel"
+            android:layout_width="0dp"
+            android:textColor="#fff"
+            android:layout_weight="3"
+            android:text="@string/eventEnd"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/eventEnd"
+            android:layout_width="0dp"
+            android:layout_weight="7"
+            android:textColor="#fff"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
