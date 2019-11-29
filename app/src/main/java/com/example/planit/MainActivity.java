@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,6 +46,9 @@ public class MainActivity extends AppCompatActivity
     private FloatingActionButton fabGallery;
 
     private Uri imageUri;
+
+    private Integer imageMaxWidth;
+    private Integer imageMaxHeight;
 
     private boolean isFABOpen = false;
 
@@ -218,10 +222,30 @@ public class MainActivity extends AppCompatActivity
             }
 
             Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+
+            // Get the dimensions of the View
+            Pair<Integer, Integer> targetedSize = getTargetedWidthHeight();
+
+            int targetWidth = targetedSize.first;
+            int maxHeight = targetedSize.second;
+
+            // Determine how much to scale down the image
+            float scaleFactor =
+                    Math.max(
+                            (float) imageBitmap.getWidth() / (float) targetWidth,
+                            (float) imageBitmap.getHeight() / (float) maxHeight);
+
+            Bitmap resizedBitmap =
+                    Bitmap.createScaledBitmap(
+                            imageBitmap,
+                            (int) (imageBitmap.getWidth() / scaleFactor),
+                            (int) (imageBitmap.getHeight() / scaleFactor),
+                            true);
+
             //Write file
             String filename = "event_capture.png";
             FileOutputStream stream = this.openFileOutput(filename, Context.MODE_PRIVATE);
-            imageBitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
+            resizedBitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
 
             //Cleanup
             stream.close();
@@ -247,5 +271,30 @@ public class MainActivity extends AppCompatActivity
         isFABOpen = false;
         fabCamera.animate().translationY(0).setDuration(150);
         fabGallery.animate().translationY(0).setDuration(150);
+    }
+
+    // Gets the targeted width / height.
+    private Pair<Integer, Integer> getTargetedWidthHeight() {
+        int maxWidthForPortraitMode = getImageMaxWidth();
+        int maxHeightForPortraitMode = getImageMaxHeight();
+        int targetWidth = maxWidthForPortraitMode;
+        int targetHeight = maxHeightForPortraitMode;
+
+
+        return new Pair<>(targetWidth, targetHeight);
+    }
+
+    private Integer getImageMaxWidth() {
+        if (imageMaxWidth == null) {
+            imageMaxWidth = ((View) fabCreate.getParent()).getWidth();
+        }
+        return imageMaxWidth;
+    }
+
+    private Integer getImageMaxHeight() {
+        if (imageMaxHeight == null) {
+            imageMaxHeight = ((View) fabCreate.getParent()).getHeight();
+        }
+        return imageMaxHeight;
     }
 }
