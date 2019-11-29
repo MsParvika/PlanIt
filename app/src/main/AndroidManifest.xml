@@ -17,13 +17,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+<<<<<<< HEAD
         <activity android:name=".ListEventsActivity"></activity>
+=======
+        <activity
+            android:name=".TextPreviewActivity"
+            android:label="@string/title_activity_text_preview"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+>>>>>>> 94d3826fb0e7f183ade9a5bf292de7c6d041f023
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+<<<<<<< HEAD
         <activity android:name=".MapsActivity" android:label="@string/title_activity_maps" />
+=======
+        <activity
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps" />
+>>>>>>> 94d3826fb0e7f183ade9a5bf292de7c6d041f023
         <activity android:name=".AccountActivity" />
         <activity android:name=".MainActivity" android:label="@string/app_name" android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
