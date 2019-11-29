@@ -13,7 +13,7 @@
     <string name="edit_name">Edit name</string>
     <string name="save">Save</string>
     <string name="title_activity_maps">Map</string>
-    <string name="title_activity_text_preview">TextPreviewActivity</string>
+    <string name="title_activity_text_preview">Preview Detected Text</string>
     <string name="server_client_id">75819850470-70fr1b82an1med5h2iv62jk2rgitibvj.apps.googleusercontent.com</string>
 
 </resources>

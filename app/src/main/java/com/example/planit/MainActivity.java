@@ -267,12 +267,14 @@ public class MainActivity extends AppCompatActivity
         isFABOpen = true;
         fabCamera.animate().translationY(-getResources().getDimension(R.dimen.standard_65)).setDuration(150);
         fabGallery.animate().translationY(-getResources().getDimension(R.dimen.standard_125)).setDuration(150);
+        fabCreate.animate().rotationBy(225).setDuration(150);
     }
 
     private void closeFABMenu() {
         isFABOpen = false;
         fabCamera.animate().translationY(0).setDuration(150);
         fabGallery.animate().translationY(0).setDuration(150);
+        fabCreate.animate().rotationBy(-225).setDuration(150);
     }
 
     // Gets the targeted width / height.

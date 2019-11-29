@@ -27,8 +27,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class LoginActivity extends AppCompatActivity {
 
     int RC_SIGN_IN = 0;
-//    SignInButton signInButton;
-//    GoogleSignInClient mGoogleSignInClient;
     private static final String TAG = "LoginActivty";
 
     // [START declare_auth]
@@ -90,24 +88,9 @@ public class LoginActivity extends AppCompatActivity {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e);
             }
-//            handleSignInResult(task);
         }
     }
 
-//    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-//        try {
-//            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-//            // Signed in successfully, show authenticated UI.
-//            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//            startActivity(intent);
-//        }
-//        catch (ApiException e) {
-//            // The ApiException status code indicates the detailed failure reason.
-//            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-//            Log.w("Error", "signInResult:failed code=" + e.getStatusCode());
-//            Log.w("Error", "signInResult:failed code=" + e.getMessage());
-//        }
-//    }
 
     // [START auth_with_google]
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
@@ -139,9 +122,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // Check for existing Google Sign In account, if the user is already signed in
-        // the GoogleSignInAccount will be non-null.
-//        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        // TO DO: Implement intent to go to our main activity.
+
     }
 }
