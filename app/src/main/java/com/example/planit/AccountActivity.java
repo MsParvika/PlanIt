@@ -25,8 +25,10 @@ public class AccountActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
+        String serverClientId = getString(R.string.server_client_id);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.server_client_id))
+//                .requestIdToken(getString(R.string.server_client_id))
+                .requestServerAuthCode(serverClientId)
                 .requestEmail()
                 .build();
         // Build a GoogleSignInClient with the options specified by gso.
