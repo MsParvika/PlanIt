@@ -159,7 +159,8 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(MainActivity.this, AccountActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_upcomingevent) {
-
+            Intent intent = new Intent(MainActivity.this, ListEventsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_maps) {
             // TODO : get a location
             Uri gmmIntentUri = Uri.parse("geo:0,0?q=1600 Amphitheatre Parkway, Mountain+View, California");

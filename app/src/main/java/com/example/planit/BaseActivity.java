@@ -96,19 +96,37 @@ public class BaseActivity extends AppCompatActivity
 //                }
 //            };
 //        } else
-        if (id == R.id.nav_account) {
-            Intent intent = new Intent(BaseActivity.this, AccountActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_upcomingevent) {
-
-        } else if (id == R.id.nav_maps) {
-            Intent intent = new Intent(BaseActivity.this, MapsActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_pastevents) {
-
-        } else if (id == R.id.nav_share) {
+        Intent intent = null;
+        switch (id){
+            case R.id.nav_account:
+                intent = new Intent(BaseActivity.this, AccountActivity.class);
+                break;
+            case R.id.nav_upcomingevent:
+                intent = new Intent(BaseActivity.this, ListEventsActivity.class);
+                break;
+            case R.id.nav_pastevents:
+                break;
+            case R.id.nav_maps:
+                intent = new Intent(BaseActivity.this, MapsActivity.class);
+                break;
+            case R.id.nav_share:
+                break;
 
         }
+        startActivity(intent);
+//        if (id == R.id.nav_account) {
+//            Intent intent = new Intent(BaseActivity.this, AccountActivity.class);
+//            startActivity(intent);
+//        } else if (id == R.id.nav_upcomingevent) {
+//
+//        } else if (id == R.id.nav_maps) {
+//            Intent intent = new Intent(BaseActivity.this, MapsActivity.class);
+//            startActivity(intent);
+//        } else if (id == R.id.nav_pastevents) {
+//
+//        } else if (id == R.id.nav_share) {
+//
+//        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
