@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fireTopLayout"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000"
-    android:keepScreenOn="true">
+    android:keepScreenOn="true"
+    android:orientation="vertical">
 
 
     <ImageView
@@ -15,8 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:scaleType="fitStart">
-    </ImageView>
+        android:scaleType="fitStart"></ImageView>
 
 
     <com.example.planit.util.GraphicOverlay
@@ -25,6 +23,69 @@
         android:layout_height="fill_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true" />
+
+    <LinearLayout
+        android:id="@+id/decisionContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/previewPane"
+        android:layout_alignParentBottom="true">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_weight="2">
+
+            <TextView
+                android:id="@+id/textViewRawDetected"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Wait for text to be detected."
+                android:textColor="@color/gmm_white"
+                android:scrollbars="vertical"
+                android:layout_margin="5dp" />
+
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/decisionButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:minHeight="55dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonTryAgain"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#ab003c"
+                android:text="Try Again"
+                android:textAlignment="center"
+                android:textAppearance="@style/ButtonTextAppearance"
+                android:textSize="18sp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonLooksGood"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:text="Looks Good!"
+                android:textAlignment="center"
+                android:textAppearance="@style/ButtonTextAppearance"
+                android:textSize="18sp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
 
 </RelativeLayout>

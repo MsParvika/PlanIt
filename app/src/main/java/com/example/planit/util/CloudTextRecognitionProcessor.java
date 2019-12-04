@@ -17,8 +17,12 @@ import android.graphics.Bitmap;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.planit.R;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
@@ -42,6 +46,11 @@ public class CloudTextRecognitionProcessor extends VisionProcessorBase<FirebaseV
     }
 
     @Override
+    public String getRawDetectedText(){
+        return detectedText;
+    }
+
+    @Override
     protected Task<FirebaseVisionText> detectInImage(FirebaseVisionImage image) {
         return detector.processImage(image);
     }
@@ -51,12 +60,16 @@ public class CloudTextRecognitionProcessor extends VisionProcessorBase<FirebaseV
             @Nullable Bitmap originalCameraImage,
             @NonNull FirebaseVisionText text,
             @NonNull FrameMetadata frameMetadata,
-            @NonNull GraphicOverlay graphicOverlay) {
+            @NonNull GraphicOverlay graphicOverlay, @NonNull LinearLayout decisionContainer) {
         graphicOverlay.clear();
         if (text == null) {
             return; // TODO: investigate why this is needed
         }
         List<FirebaseVisionText.TextBlock> blocks = text.getTextBlocks();
+        detectedText = text.getText();
+        TextView rawTextView = decisionContainer.findViewById(R.id.textViewRawDetected);
+        rawTextView.setText(detectedText);
+
         for (int i = 0; i < blocks.size(); i++) {
             List<FirebaseVisionText.Line> lines = blocks.get(i).getLines();
             for (int j = 0; j < lines.size(); j++) {
@@ -68,6 +81,7 @@ public class CloudTextRecognitionProcessor extends VisionProcessorBase<FirebaseV
                 }
             }
         }
+        decisionContainer.setVisibility(View.VISIBLE);
         graphicOverlay.postInvalidate();
     }
 

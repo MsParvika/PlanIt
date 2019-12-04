@@ -15,6 +15,7 @@ package com.example.planit.util;
 
 import android.graphics.Bitmap;
 import android.media.Image;
+import android.widget.LinearLayout;
 
 import com.example.planit.util.FrameMetadata;
 import com.example.planit.util.GraphicOverlay;
@@ -27,13 +28,15 @@ import java.nio.ByteBuffer;
 public interface VisionImageProcessor {
 
     /** Processes the images with the underlying machine learning models. */
-    void process(ByteBuffer data, FrameMetadata frameMetadata, GraphicOverlay graphicOverlay)
+    void process(ByteBuffer data, FrameMetadata frameMetadata, GraphicOverlay graphicOverlay, LinearLayout decisionContainer)
             throws FirebaseMLException;
 
     /** Processes the bitmap images. */
-    void process(Bitmap bitmap, GraphicOverlay graphicOverlay);
+    void process(Bitmap bitmap, GraphicOverlay graphicOverlay, LinearLayout decisionContainer);
 
     /** Stops the underlying machine learning model and release resources. */
     void stop();
+
+    String getRawDetectedText();
 }
 
