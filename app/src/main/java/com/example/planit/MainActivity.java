@@ -2,10 +2,13 @@ package com.example.planit;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -19,21 +22,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -42,10 +47,15 @@ public class MainActivity extends AppCompatActivity
 
     private static final int CAMERA_REQUEST = 1888;
     private static final int CAPTURE_PERMISSIONS_CODE = 100;
+    private static final int MY_CAL_REQ = 101;
 
     private FloatingActionButton fabCreate;
     private FloatingActionButton fabCamera;
     private FloatingActionButton fabGallery;
+
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     private Uri imageUri;
 
@@ -97,6 +107,20 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
+
+        recyclerView = findViewById(R.id.my_recycler_view);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        recyclerView.setHasFixedSize(false);
+
+        // use a linear layout manager
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        // specify an adapter (see also next example)
+        mAdapter = new MyAdapter(getDataFromEventTable());
+        recyclerView.setAdapter(mAdapter);
     }
 
 
@@ -109,6 +133,12 @@ public class MainActivity extends AppCompatActivity
                 startCameraIntentForResult();
             } else {
                 Toast.makeText(this, "Permissions Denied", Toast.LENGTH_LONG).show();
+            }
+        } else if (requestCode == MY_CAL_REQ){
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            }else{
+                Toast.makeText(this, "Calendar Permission Denied", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -300,5 +330,39 @@ public class MainActivity extends AppCompatActivity
             imageMaxHeight = ((View) fabCreate.getParent()).getHeight();
         }
         return imageMaxHeight;
+    }
+
+    public ArrayList<String> getDataFromEventTable() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, MY_CAL_REQ);
+        }
+
+        Cursor cur = null;
+        ContentResolver cr = getContentResolver();
+
+        String[] mProjection =
+                {
+                        "_id",
+                        CalendarContract.Events.TITLE,
+                        CalendarContract.Events.EVENT_LOCATION,
+                        CalendarContract.Events.DTSTART,
+                        CalendarContract.Events.DTEND,
+                        CalendarContract.Events.ACCOUNT_NAME
+                };
+
+        Uri uri = CalendarContract.Events.CONTENT_URI;
+        String selection = CalendarContract.Events.ACCOUNT_NAME + " = ? ";
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        String[] selectionArgs = new String[]{pref.getString("user", "")};
+
+        cur = cr.query(uri, mProjection, selection, selectionArgs, CalendarContract.Events.DTSTART + " desc");
+
+        ArrayList<String> result = new ArrayList<>();
+        while (cur.moveToNext()) {
+            String title = cur.getString(cur.getColumnIndex(CalendarContract.Events.TITLE));
+            result.add(title);
+        }
+        return result;
     }
 }

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "75819850470-g97nlnoae7srgdkl30rs2hpd0p60tsrt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.planit",
+            "certificate_hash": "f40b2a77ea674c0222cbe02a7d67226ecbaaf2ee"
+          }
+        },
+        {
           "client_id": "75819850470-enjcdivskj16uj6oq0jrf5ogu79j3m4s.apps.googleusercontent.com",
           "client_type": 3
         }

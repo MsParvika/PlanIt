@@ -1,9 +1,11 @@
 package com.example.planit;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.planit.util.AccessTokenLoader;
+import com.example.planit.util.Callback;
 import com.example.planit.util.CloudTextRecognitionProcessor;
 import com.example.planit.util.GraphicOverlay;
 import com.example.planit.util.VisionImageProcessor;
@@ -31,27 +34,16 @@ import com.google.api.services.language.v1.model.Entity;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
-public class TextPreviewActivity extends AppCompatActivity {
-
-    public interface Callback {
-
-        /**
-         * Called when an "entities" API request is complete.
-         *
-         * @param entities The entities.
-         */
-        void onEntitiesReady(EntityInfo[] entities);
-
-    }
+public class TextPreviewActivity extends AppCompatActivity implements Callback {
 
     private static final String TAG = "TextPreviewActivity";
 
@@ -69,6 +61,7 @@ public class TextPreviewActivity extends AppCompatActivity {
     private GoogleCredential mCredential;
     private Thread mThread;
     private Callback mCallback;
+    private EntityInfo[] detectedEntities;
 
     private final BlockingQueue<CloudNaturalLanguageRequest<? extends GenericJson>> mRequests
             = new ArrayBlockingQueue<>(3);
@@ -87,14 +80,16 @@ public class TextPreviewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_text_preview);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
         preview = findViewById(R.id.previewPane);
         decisionLinearLayout = findViewById(R.id.decisionContainer);
         looksGoodButton = decisionLinearLayout.findViewById(R.id.buttonLooksGood);
         tryAgainButton = decisionLinearLayout.findViewById(R.id.buttonTryAgain);
         rawDetectedText = decisionLinearLayout.findViewById(R.id.textViewRawDetected);
+
+        mCallback = this;
 
         looksGoodButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,23 +187,51 @@ public class TextPreviewActivity extends AppCompatActivity {
 
     private void deliverResponse(GenericJson response) {
         final Activity activity = this;
-        EntityInfo[] result = null;
         if (response instanceof AnalyzeEntitiesResponse) {
             final List<Entity> entities = ((AnalyzeEntitiesResponse) response).getEntities();
             final int size = entities.size();
-            final EntityInfo[] array = new EntityInfo[size];
+            detectedEntities = new EntityInfo[size];
             for (int i = 0; i < size; i++) {
-                array[i] = new EntityInfo(entities.get(i));
+                detectedEntities[i] = new EntityInfo(entities.get(i));
             }
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     if (mCallback != null) {
-                        mCallback.onEntitiesReady(array);
+                        mCallback.onEntitiesReady(detectedEntities);
                     }
                 }
             });
         }
     }
 
+    @Override
+    public void onEntitiesReady(EntityInfo[] entities) {
+
+        String locationDetails = "";
+        String dateDetails = "";
+        String otherDetails = "";
+        String eventTitle = "";
+
+        for(EntityInfo entity : entities){
+            if(entity.type.equals("LOCATION") || entity.type.equals("ADDRESS")){
+                locationDetails += entity.name + " ";
+            }else if(entity.type.equals("DATE")){
+                dateDetails += entity.name + " ";
+            }else if(entity.type.equals("EVENT")){
+                eventTitle += entity.name + " ";
+            }else{
+                otherDetails += entity.name + " ";
+            }
+        }
+
+        Intent intent = new Intent(Intent.ACTION_INSERT)
+                .setData(CalendarContract.Events.CONTENT_URI)
+                .putExtra(CalendarContract.Events.TITLE, eventTitle)
+                .putExtra(CalendarContract.Events.DESCRIPTION, dateDetails)
+                .putExtra(CalendarContract.Events.EVENT_LOCATION, locationDetails);
+
+
+        startActivity(intent);
+    }
 }
