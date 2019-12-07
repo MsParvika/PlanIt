@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity
     private static final int CAMERA_REQUEST = 1888;
     private static final int CAPTURE_PERMISSIONS_CODE = 100;
     private static final int MY_CAL_REQ = 101;
+    private static final int READ_GALLERY_PERMISSION = 500;
+    private static final int REQUEST_CHOOSE_IMAGE = 1002;
 
     private FloatingActionButton fabCreate;
     private FloatingActionButton fabCamera;
@@ -108,6 +110,19 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        fabGallery.setOnClickListener(new View.OnClickListener() {
+            @TargetApi(Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View v) {
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_GALLERY_PERMISSION);
+                } else {
+                    pickImageFromGallery();
+                }
+
+            }
+        });
+
         recyclerView = findViewById(R.id.my_recycler_view);
 
         // use this setting to improve performance if you know that changes
@@ -140,12 +155,21 @@ public class MainActivity extends AppCompatActivity
             }else{
                 Toast.makeText(this, "Calendar Permission Denied", Toast.LENGTH_LONG).show();
             }
+        } else if (requestCode == READ_GALLERY_PERMISSION) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                pickImageFromGallery();
+            } else {
+                Toast.makeText(this, "Permissions Denied", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST && resultCode == AppCompatActivity.RESULT_OK) {
+            startTextDetectionAndPreview();
+        }else if(requestCode == REQUEST_CHOOSE_IMAGE && resultCode == AppCompatActivity.RESULT_OK){
+            imageUri = data.getData();
             startTextDetectionAndPreview();
         }
     }
@@ -364,5 +388,12 @@ public class MainActivity extends AppCompatActivity
             result.add(title);
         }
         return result;
+    }
+
+    private void pickImageFromGallery(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_CHOOSE_IMAGE);
     }
 }
