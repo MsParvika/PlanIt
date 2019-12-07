@@ -98,6 +98,13 @@ public class TextPreviewActivity extends AppCompatActivity implements Callback {
             }
         });
 
+        tryAgainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         decisionLinearLayout.setVisibility(View.INVISIBLE);
 
         String filename = getIntent().getStringExtra("image");
